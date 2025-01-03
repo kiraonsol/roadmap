@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIRA AI Roadmap</title>
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-pink: #ff2d55;
+            --neon-blue: #00fff5;
+            --neon-purple: #bc13fe;
+            --dark-bg: #050505; /* Darkened from #0a0a0a to #050505 */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--dark-bg); /* Added explicit dark background */
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .kira-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.12; /* Reduced from 0.15 */
+            filter: grayscale(30%) blur(3px);
+            animation: pulseImage 8s ease-in-out infinite;
+        }
+
+        .gradient-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                45deg,
+                rgba(5, 5, 5, 0.95), /* Darkened from rgba(10, 10, 10, 0.9) */
+                rgba(188, 19, 254, 0.08), /* Reduced opacity from 0.1 */
+                rgba(5, 5, 5, 0.95) /* Darkened from rgba(10, 10, 10, 0.9) */
+            );
+            mix-blend-mode: multiply;
+        }
+
+        .noise-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.04; /* Reduced from 0.05 */
+            mix-blend-mode: overlay;
+        }
+
+        @keyframes pulseImage {
+            0% { opacity: 0.12; } /* Reduced from 0.15 */
+            50% { opacity: 0.17; } /* Reduced from 0.2 */
+            100% { opacity: 0.12; } /* Reduced from 0.15 */
+        }
+
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 3;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .header h1 {
+            font-family: 'Russo One', sans-serif;
+            font-size: 5rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+            background: linear-gradient(
+                45deg,
+                var(--neon-pink),
+                var(--neon-purple),
+                var(--neon-blue)
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 
+                0 0 10px rgba(255, 45, 85, 0.5),
+                0 0 20px rgba(188, 19, 254, 0.3),
+                0 0 30px rgba(0, 255, 245, 0.2);
+            animation: textGlow 3s ease-in-out infinite alternate;
+        }
+
+        .roadmap {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .roadmap::before {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, var(--neon-blue), transparent);
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 15px var(--neon-blue);
+            animation: pulse 2s infinite;
+        }
+
+        .milestone {
+            display: flex;
+            justify-content: flex-end;
+            padding: 2rem 0;
+            width: 50%;
+            position: relative;
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s ease;
+        }
+
+        .milestone.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .milestone:nth-child(odd) {
+            margin-left: auto;
+            justify-content: flex-start;
+            transform: translateX(50px);
+        }
+
+        .milestone:nth-child(odd).visible {
+            transform: translateX(0);
+        }
+
+        .milestone::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--neon-purple);
+            border-radius: 50%;
+            top: 50%;
+            right: -10px;
+            transform: translateY(-50%);
+            box-shadow: 0 0 20px var(--neon-purple);
+            animation: pulse 2s infinite;
+        }
+
+        .milestone:nth-child(odd)::after {
+            right: auto;
+            left: -10px;
+        }
+
+        .milestone-content {
+            background: rgba(255, 255, 255, 0.02); /* Reduced from 0.03 */
+            padding: 2rem;
+            border-radius: 10px;
+            width: 80%;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--neon-purple);
+            box-shadow: 0 0 20px rgba(188, 19, 254, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .milestone-content:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 0 30px rgba(188, 19, 254, 0.4);
+        }
+
+        .milestone h2 {
+            font-family: 'Russo One', sans-serif;
+            font-size: 1.8rem;
+            background: linear-gradient(
+                45deg,
+                var(--neon-blue),
+                var(--neon-purple)
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .milestone p {
+            color: #cccccc;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        @keyframes textGlow {
+            0% {
+                text-shadow: 
+                    0 0 10px rgba(255, 45, 85, 0.5),
+                    0 0 20px rgba(188, 19, 254, 0.3),
+                    0 0 30px rgba(0, 255, 245, 0.2);
+            }
+            100% {
+                text-shadow: 
+                    0 0 20px rgba(255, 45, 85, 0.8),
+                    0 0 40px rgba(188, 19, 254, 0.6),
+                    0 0 60px rgba(0, 255, 245, 0.4);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .roadmap::before {
+                left: 0;
+            }
+
+            .milestone {
+                width: 100%;
+                justify-content: flex-start;
+                padding-left: 2rem;
+            }
+
+            .milestone:nth-child(odd) {
+                justify-content: flex-start;
+            }
+
+            .milestone-content {
+                width: 100%;
+            }
+
+            .milestone::after {
+                left: -10px;
+                right: auto;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .milestone h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-overlay">
+        <img class="kira-image" src="https://i.imgur.com/zyGRO0c.png" alt="Kira AI">
+        <div class="gradient-overlay"></div>
+        <div class="noise-overlay"></div>
+    </div>
+
+    <div id="particles-js"></div>
+    <div class="container">
+        <div class="header">
+            <h1>KIRA AI Roadmap</h1>
+        </div>
+        
+        <div class="roadmap">
+            <div class="milestone">
+                <div class="milestone-content">
+                    <h2>Phase 1: Foundation</h2>
+                    <p>Creation and launch of basic website infrastructure</p>
+                </div>
+            </div>
+
+            <div class="milestone">
+                <div class="milestone-content">
+                    <h2>Phase 2: NFT Collection</h2>
+                    <p>Development and launch of exclusive KIRA NFT collection featuring unique digital artifacts</p>
+                </div>
+            </div>
+
+            <div class="milestone">
+                <div class="milestone-content">
+                    <h2>Phase 3: KIRA AI Chat</h2>
+                    <p>Implementation of custom LLM-powered chatbot web application featuring interactive KIRA AI</p>
+                </div>
+            </div>
+
+            <div class="milestone">
+                <div class="milestone-content">
+                    <h2>Phase 4: Abyss Launch</h2>
+                    <p>"Abyss: The Enigma of KIRA" - Release of psychological AI thriller game featuring dynamic conversations, moral choices, and reality-bending visuals</p>
+                </div>
+            </div>
+
+            <div class="milestone">
+                <div class="milestone-content">
+                    <h2>Phase 5: Economy Integration</h2>
+                    <p>Development of in-game economy utilizing Enjin (NFTs) and Solana ($KIRA) blockchain integration</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#bc13fe' },
+                shape: { type: 'circle' },
+                opacity: {
+                    value: 0.5,
+                    random: true,
+                    animation: { enable: true, speed: 1, minimumValue: 0.1, sync: false }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    animation: { enable: true, speed: 2, minimumValue: 0.1, sync: false }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#00fff5',
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 1,
+                    direction: 'none',
+                    random: true,
+                    straight: false,
+                    out_mode: 'out',
+                    bounce: false,
+                    attract: { enable: false, rotateX: 600, rotateY: 1200 }
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: { enable: true, mode: 'repulse' },
+                    onclick: { enable: true, mode: 'push' },
+                    resize: true
+                },
+                modes: {
+                    repulse: { distance: 100, duration: 0.4 },
+                    push: { particles_nb: 4 }
+                }
+            },
+            retina_detect: true
+        });
+
+        // Intersection Observer for milestone animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.milestone').forEach(milestone => {
+            observer.observe(milestone);
+        });
+    </script>
+</body>
+</html>
