@@ -310,40 +310,73 @@
                 display: none;
             }
 
-            .milestone-check {
-                left: -40px !important;
-                right: auto !important;
-            }
-
             .roadmap::before {
-                left: 0;
+                left: 30px;
             }
 
             .milestone {
                 width: 100%;
+                padding-left: 70px;
+                padding-right: 20px;
                 justify-content: flex-start;
-                padding-left: 2rem;
             }
 
             .milestone:nth-child(odd) {
                 justify-content: flex-start;
+                padding-left: 70px;
+                padding-right: 20px;
+            }
+
+            .milestone::after {
+                left: 20px;
+                right: auto;
+            }
+
+            .milestone:nth-child(odd)::after {
+                left: 20px;
             }
 
             .milestone-content {
                 width: 100%;
+                margin-left: 0;
             }
 
-            .milestone::after {
-                left: -10px;
-                right: auto;
+            .milestone-check {
+                left: 60px !important;
+                right: auto !important;
             }
 
             .header h1 {
                 font-size: 2.5rem;
+                padding: 0 10px;
             }
 
             .milestone h2 {
                 font-size: 1.5rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .milestone-content {
+                padding: 1.5rem;
+            }
+
+            .milestone {
+                padding-left: 60px;
+                padding-right: 10px;
+            }
+
+            .milestone:nth-child(odd) {
+                padding-left: 60px;
+                padding-right: 10px;
             }
         }
     </style>
