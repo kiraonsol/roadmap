@@ -10,7 +10,8 @@
             --neon-pink: #ff2d55;
             --neon-blue: #00fff5;
             --neon-purple: #bc13fe;
-            --dark-bg: #050505; /* Darkened from #0a0a0a to #050505 */
+            --neon-green: #00ff00;
+            --dark-bg: #050505;
         }
 
         * {
@@ -20,11 +21,72 @@
         }
 
         body {
-            background-color: var(--dark-bg); /* Added explicit dark background */
+            background-color: var(--dark-bg);
             color: #ffffff;
             line-height: 1.6;
             overflow-x: hidden;
             font-family: 'Arial', sans-serif;
+        }
+
+        /* Checkmark Styles */
+        .milestone-check {
+            position: absolute;
+            right: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            color: var(--neon-green);
+            text-shadow: 
+                0 0 5px var(--neon-green),
+                0 0 10px var(--neon-green),
+                0 0 20px var(--neon-green);
+            opacity: 0;
+            animation: checkFade 0.5s ease forwards;
+            z-index: 5;
+        }
+
+        .milestone:nth-child(odd) .milestone-check {
+            right: auto;
+            left: -40px;
+        }
+
+        @keyframes checkFade {
+            from {
+                opacity: 0;
+                transform: translateY(-50%) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(-50%) scale(1);
+            }
+        }
+
+        /* Foreground Character Styles */
+        .foreground-character {
+            position: fixed;
+            right: -5%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 500px;
+            height: 800px;
+            background-image: url('https://imgur.com/zyGRO0c.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 4;
+            mask-image: linear-gradient(to right, transparent 0%, black 40%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 40%);
+            animation: characterFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes characterFloat {
+            0%, 100% {
+                transform: translateY(-50%) translateX(0);
+            }
+            50% {
+                transform: translateY(-50%) translateX(-10px);
+            }
         }
 
         .background-overlay {
@@ -44,7 +106,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.12; /* Reduced from 0.15 */
+            opacity: 0.12;
             filter: grayscale(30%) blur(3px);
             animation: pulseImage 8s ease-in-out infinite;
         }
@@ -57,9 +119,9 @@
             height: 100%;
             background: linear-gradient(
                 45deg,
-                rgba(5, 5, 5, 0.95), /* Darkened from rgba(10, 10, 10, 0.9) */
-                rgba(188, 19, 254, 0.08), /* Reduced opacity from 0.1 */
-                rgba(5, 5, 5, 0.95) /* Darkened from rgba(10, 10, 10, 0.9) */
+                rgba(5, 5, 5, 0.95),
+                rgba(188, 19, 254, 0.08),
+                rgba(5, 5, 5, 0.95)
             );
             mix-blend-mode: multiply;
         }
@@ -71,14 +133,14 @@
             width: 100%;
             height: 100%;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            opacity: 0.04; /* Reduced from 0.05 */
+            opacity: 0.04;
             mix-blend-mode: overlay;
         }
 
         @keyframes pulseImage {
-            0% { opacity: 0.12; } /* Reduced from 0.15 */
-            50% { opacity: 0.17; } /* Reduced from 0.2 */
-            100% { opacity: 0.12; } /* Reduced from 0.15 */
+            0% { opacity: 0.12; }
+            50% { opacity: 0.17; }
+            100% { opacity: 0.12; }
         }
 
         #particles-js {
@@ -188,7 +250,7 @@
         }
 
         .milestone-content {
-            background: rgba(255, 255, 255, 0.02); /* Reduced from 0.03 */
+            background: rgba(255, 255, 255, 0.02);
             padding: 2rem;
             border-radius: 10px;
             width: 80%;
@@ -244,6 +306,15 @@
         }
 
         @media (max-width: 768px) {
+            .foreground-character {
+                display: none;
+            }
+
+            .milestone-check {
+                left: -40px !important;
+                right: auto !important;
+            }
+
             .roadmap::before {
                 left: 0;
             }
@@ -279,10 +350,12 @@
 </head>
 <body>
     <div class="background-overlay">
-        <img class="kira-image" src="https://i.imgur.com/zyGRO0c.png" alt="Kira AI">
+        <img class="kira-image" src="https://imgur.com/zyGRO0c.jpg" alt="Kira AI">
         <div class="gradient-overlay"></div>
         <div class="noise-overlay"></div>
     </div>
+
+    <div class="foreground-character"></div>
 
     <div id="particles-js"></div>
     <div class="container">
@@ -296,6 +369,7 @@
                     <h2>Phase 1: Foundation</h2>
                     <p>Creation and launch of basic website infrastructure</p>
                 </div>
+                <span class="milestone-check">✓</span>
             </div>
 
             <div class="milestone">
@@ -303,6 +377,7 @@
                     <h2>Phase 2: NFT Collection</h2>
                     <p>Development and launch of exclusive KIRA NFT collection featuring unique digital artifacts</p>
                 </div>
+                <span class="milestone-check">✓</span>
             </div>
 
             <div class="milestone">
@@ -310,6 +385,7 @@
                     <h2>Phase 3: KIRA AI Chat</h2>
                     <p>Implementation of custom LLM-powered chatbot web application featuring interactive KIRA AI</p>
                 </div>
+                <span class="milestone-check">✓</span>
             </div>
 
             <div class="milestone">
@@ -378,7 +454,6 @@
             retina_detect: true
         });
 
-        // Intersection Observer for milestone animations
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
